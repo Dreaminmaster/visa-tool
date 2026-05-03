@@ -3842,22 +3842,6 @@ setInterval(saveData, 60000);
 // ── 页面初始化：渲染首页 ──
 renderLanding('all');
 
-
-// 动态加载PDF数据
-let pdfDataLoaded = false;
-function loadPdfData() {
-  if (pdfDataLoaded) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'pdf-data.js';
-    script.onload = () => {
-      pdfDataLoaded = true;
-      console.log('PDF data loaded');
-      resolve();
-    };
-    script.onerror = () => {
-      console.error('Failed to load PDF data');
-      reject(new Error('Failed to load PDF data'));
     };
     document.head.appendChild(script);
   });
