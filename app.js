@@ -70,7 +70,15 @@ const VISA_TYPES_DATA = {
     {id:'arrival',name:'落地签',stay:'15天',fee:'约400元',time:'即时'}
   ],
   'singapore': [{id:'tourism',name:'旅游签证',stay:'30天',fee:'约300元',time:'3-5天'}],
-  'newzealand': [{id:'tourism',name:'访客签证',stay:'90天',fee:'约900元',time:'20-25天'}]
+  'newzealand': [{id:'tourism',name:'访客签证',stay:'90天',fee:'约900元',time:'20-25天'}],
+  'spain': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'italy': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'greece': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'sweden': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'iceland': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'austria': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'france': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}],
+  'germany': [{id:'schengen',name:'申根旅游签证',stay:'90天',fee:'约600元',time:'5-15天'}]
 };
 
 // ── 签证类型特定数据 ──
@@ -198,13 +206,64 @@ const VISA_TYPE_DETAILS = {
   }
 };
 
-// 申根国家通用数据
+// 申根国家各自数据
 const SCHENGEN_DATA = {
-  docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
-  costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
-  rate: 85, rateLabel: '较高', rateLevel: 'high',
-  tips: ['申根签证可访问所有申根国家','建议提前1个月申请','本站可生成填写好的PDF申请表'],
-  pitfalls: ['材料未翻译','申根保险不符合要求','行程单与酒店/机票不匹配']
+  spain: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或西班牙文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 85, rateLabel: '较高', rateLevel: 'high',
+    tips: ['西班牙申根签证通过率较高','建议提前1个月申请','本站可生成填写好的PDF申请表'],
+    pitfalls: ['材料未翻译','申根保险不符合要求','行程单与酒店/机票不匹配']
+  },
+  italy: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或意大利文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true},{name:'户口本复印件',desc:'整本复印',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300},{name:'户口本翻译',price:100}],
+    rate: 82, rateLabel: '较高', rateLevel: 'high',
+    tips: ['意大利需要户口本复印件','有申根记录更容易获批','本站可生成填写好的PDF申请表'],
+    pitfalls: ['户口本未翻译','银行流水不足','行程单不详细']
+  },
+  greece: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 88, rateLabel: '很高', rateLevel: 'high',
+    tips: ['希腊签证通过率很高','夏季是旅游旺季','本站可生成填写好的PDF申请表'],
+    pitfalls: ['材料未翻译','申根保险不符合要求']
+  },
+  sweden: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或瑞典文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true},{name:'邀请函',desc:'如探亲访友需提供',required:false}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 80, rateLabel: '较高', rateLevel: 'high',
+    tips: ['瑞典签证审核相对严格','建议提供详细行程','本站可生成填写好的PDF申请表'],
+    pitfalls: ['行程单不够详细','银行流水不足','申根保险不符合要求']
+  },
+  iceland: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 85, rateLabel: '较高', rateLevel: 'high',
+    tips: ['冰岛是热门旅游目的地','夏季6-8月最佳','本站可生成填写好的PDF申请表'],
+    pitfalls: ['材料未翻译','申根保险不符合要求']
+  },
+  austria: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'本站可生成PDF',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或德文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 83, rateLabel: '较高', rateLevel: 'high',
+    tips: ['奥地利是音乐之都维也纳所在地','建议与德国、捷克联游','本站可生成填写好的PDF申请表'],
+    pitfalls: ['材料未翻译','申根保险不符合要求']
+  },
+  france: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'申根签证申请表',desc:'在线填写后打印',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或法文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 82, rateLabel: '较高', rateLevel: 'high',
+    tips: ['法国申根签证通过率较高','建议提前1个月申请','有申根记录更容易获批'],
+    pitfalls: ['材料未翻译','申根保险不符合要求','行程单不详细']
+  },
+  germany: {
+    docs: [{name:'护照原件',desc:'有效期6个月以上，至少2页空白',required:true},{name:'VIDEX申请表',desc:'在线填写后打印',required:true},{name:'2寸白底照片',desc:'3.5cm×4.5cm',required:true},{name:'机票预订单',desc:'往返机票',required:true},{name:'酒店预订单',desc:'覆盖全部住宿',required:true},{name:'行程单',desc:'详细行程',required:true},{name:'在职证明',desc:'英文或德文',required:true},{name:'银行流水',desc:'近3个月',required:true},{name:'申根保险',desc:'保额3万欧元以上',required:true}],
+    costs: [{name:'签证费',price:600},{name:'申根保险',price:300},{name:'照片',price:30},{name:'材料翻译',price:300}],
+    rate: 80, rateLabel: '较高', rateLevel: 'high',
+    tips: ['德国签证审核较严格','材料要非常齐全','建议提前1个月申请'],
+    pitfalls: ['材料未翻译','申根保险不符合要求','材料不齐全']
+  }
 };
 
 // ── 申请步骤数据 ──
@@ -367,12 +426,15 @@ function showGuide(countryId, typeId) {
 }
 
 function getTypeData(countryId, typeId) {
+  // 先检查 VISA_TYPE_DETAILS
   if (VISA_TYPE_DETAILS[countryId] && VISA_TYPE_DETAILS[countryId][typeId]) {
     return VISA_TYPE_DETAILS[countryId][typeId];
   }
-  if (SCHENGEN_COUNTRIES.includes(countryId)) {
-    return SCHENGEN_DATA;
+  // 申根国家使用各自的定制数据
+  if (SCHENGEN_DATA[countryId]) {
+    return SCHENGEN_DATA[countryId];
   }
+  // 默认数据
   return {
     docs: [],
     costs: [{name:'签证费',price:600},{name:'照片',price:30},{name:'快递费',price:50}],
