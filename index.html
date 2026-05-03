@@ -2278,19 +2278,24 @@ async function fillSpain(doc, pages, fontReg, fontBold) {
 
 
 // ═══════════════════════════════════════════════════
-// PDF_B64_MAP: embedded PDFs for each country
-// ═══════════════════════════════════════════════════
-const PDF_B64_MAP = {
-  italy:          PDF_B64_ITALY,
-  italy_beijing:  PDF_B64_ITALY,
-  italy_shanghai: PDF_B64_ITALY_SHANGHAI,
-  italy_guangzhou:PDF_B64_ITALY_GUANGZHOU,
-  italy_chongqing:PDF_B64_ITALY_CHONGQING,
-  greece:  PDF_B64_GREECE,
-  sweden:  PDF_B64_SWEDEN,
-  iceland: PDF_B64_ICELAND,
-  austria: PDF_B64_AUSTRIA,
-};
+// PDF_B64_MAP: embedded PDFs for each country (will be populated after loading pdf-data.js)
+let PDF_B64_MAP = null;
+
+function initPdfMap() {
+  if (PDF_B64_MAP) return;
+  if (typeof PDF_B64_ITALY === 'undefined') return;
+  PDF_B64_MAP = {
+    italy:          PDF_B64_ITALY,
+    italy_beijing:  PDF_B64_ITALY,
+    italy_shanghai: PDF_B64_ITALY_SHANGHAI,
+    italy_guangzhou:PDF_B64_ITALY_GUANGZHOU,
+    italy_chongqing:PDF_B64_ITALY_CHONGQING,
+    greece:  PDF_B64_GREECE,
+    sweden:  PDF_B64_SWEDEN,
+    iceland: PDF_B64_ICELAND,
+    austria: PDF_B64_AUSTRIA,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────
 // 全局sanitize：中文/全角标点→ASCII，过滤WinAnsi不支持字符
@@ -3617,6 +3622,9 @@ async function generate(){
   }
 
   if(!validateStep(5)) return;
+
+  // 初始化PDF映射
+  initPdfMap();
 
   // Get selected country config
   const countryConfig = VISA_COUNTRIES.find(c => c.id === selectedCountry);
