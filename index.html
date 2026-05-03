@@ -640,15 +640,14 @@ textarea{resize:vertical;min-height:60px}
 <div id="ov"><div class="spin"></div><div style="font-size:14px;font-weight:600">正在写入PDF表单字段...</div></div>
 
 <script>
+// 全局错误处理 - 防止JS错误阻塞页面
+window.onerror = function(msg, url, line, col, error) {
+  console.error('JS Error:', msg, 'at line', line);
+  return false; // 不阻塞其他脚本
+};
 
-
-
-
-
-
-
-
-const VISA_COUNTRIES = [
+// 申根国家列表
+const SCHENGEN_COUNTRIES = ['spain','italy','greece','sweden','iceland','austria'];
   {
     id: 'spain',
     flag: '🇪🇸',
@@ -656,7 +655,7 @@ const VISA_COUNTRIES = [
     embassy: 'Embajada de España',
     status: 'ready',
     note: '已内置官方申请表',
-    fillFn: fillSpain,
+    fillFn: 'fillSpain',
     pdfType: 'flat'
   },
   {
@@ -666,7 +665,7 @@ const VISA_COUNTRIES = [
     embassy: 'Ambasciata d\'Italia a Pechino',
     status: 'ready',
     note: '已内置官方申请表（意大利驻华大使馆）',
-    fillFn: fillItaly,
+    fillFn: 'fillItaly',
     pdfType: 'flat'
   },
   {
@@ -676,7 +675,7 @@ const VISA_COUNTRIES = [
     embassy: 'Ελληνική Πρεσβεία',
     status: 'ready',
     note: '已内置官方申请表（希腊大使馆）',
-    fillFn: fillGreece,
+    fillFn: 'fillGreece',
     pdfType: 'flat'
   },
   {
@@ -686,7 +685,7 @@ const VISA_COUNTRIES = [
     embassy: 'Svenska Ambassaden',
     status: 'ready',
     note: '已内置官方申请表',
-    fillFn: fillSweden,
+    fillFn: 'fillSweden',
     pdfType: 'acro'
   },
   {
@@ -696,7 +695,7 @@ const VISA_COUNTRIES = [
     embassy: 'Íslenski sendiráðinn',
     status: 'ready',
     note: '已内置官方申请表',
-    fillFn: fillIceland,
+    fillFn: 'fillIceland',
     pdfType: 'acro'
   },
   {
@@ -706,7 +705,7 @@ const VISA_COUNTRIES = [
     embassy: 'Österreichische Botschaft Peking',
     status: 'ready',
     note: '已内置官方申请表（奥地利驻华大使馆）',
-    fillFn: fillAustria,
+    fillFn: 'fillAustria',
     pdfType: 'flat'
   },
   {
@@ -1484,7 +1483,6 @@ function backToTypes() {
 
 // 签证类型特定数据
 // 是否为申根国家（可生成PDF）
-const SCHENGEN_COUNTRIES = ['spain','italy','greece','sweden','iceland','austria'];
 
 function getTypeData(countryId, typeId, guide) {
   const specific = {
@@ -3663,12 +3661,18 @@ async function generate(){
     // Fill PDF: AcroForm (Sweden/Iceland) or flat drawText (Italy/Greece/Austria)
     // For AcroForm: fill fields by name + form.flatten() removes blue boxes
     // For flat: draw text at precise coordinates
-    let _fillFn = countryConfig.fillFn;
+    let _fillFnName = countryConfig.fillFn;
     if (selectedCountry === 'italy') {
-      if (selectedItalyCity === 'shanghai')   _fillFn = fillItalyShanghai;
-      else if (selectedItalyCity === 'guangzhou') _fillFn = fillItalyGuangzhou;
-      else if (selectedItalyCity === 'chongqing') _fillFn = fillItalyChongqing;
-      else _fillFn = fillItaly; // beijing
+      if (selectedItalyCity === 'shanghai')   _fillFnName = 'fillItalyShanghai';
+      else if (selectedItalyCity === 'guangzhou') _fillFnName = 'fillItalyGuangzhou';
+      else if (selectedItalyCity === 'chongqing') _fillFnName = 'fillItalyChongqing';
+      else _fillFnName = 'fillItaly'; // beijing
+    }
+    // Look up function by name
+    const _fillFn = typeof window[_fillFnName] === 'function' ? window[_fillFnName] : null;
+    if (!_fillFn) {
+      alert('PDF填写函数未找到：' + _fillFnName);
+      return;
     }
     await _fillFn(doc, pages, fontReg, fontBold);
 
