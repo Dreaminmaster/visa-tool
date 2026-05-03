@@ -458,6 +458,16 @@ function renderGuide(countryId, c, typeId) {
   const data = getTypeData(countryId, typeId);
   let html = '';
   
+  // 递交方式 & 官方来源
+  html += '<div class="guide-section">';
+  html += `<div class="guide-title">🏛️ 官方信息 & 递交方式</div>`;
+  html += `<div class="info-item"><strong>官方来源：</strong><span style="color:#2563eb">${data.officialSource}</span></div>`;
+  html += `<div class="info-item"><strong>递交模式：</strong>${data.submissionMethod.description}</div>`;
+  if (data.submissionMethod.personalLink) {
+    html += `<a href="${data.submissionMethod.personalLink}" target="_blank" class="btn btn-outline" style="margin-top:8px;display:inline-block;padding:4px 12px;font-size:12px">查看官方预约/指南</a>`;
+  }
+  html += '</div>';
+
   // 概览卡片
   html += '<div class="guide-section"><div class="guide-title">📋 签证概览</div><div class="guide-overview">';
   html += `<div class="overview-item"><span class="ov-label">签证类型</span><span class="ov-value">${typeId}</span></div>`;
@@ -535,6 +545,106 @@ function renderGuide(countryId, c, typeId) {
   html += '<button class="btn btn-s" onclick="backToLanding()">← 返回选择国家</button></div>';
   
   container.innerHTML = html;
+}
+
+function getTypeData(countryId, typeId) {
+  const c = VISA_COUNTRIES.find(x => x.id === countryId);
+  const typeInfo = (VISA_TYPES_DATA[countryId] || []).find(t => t.id === typeId) || {name:'签证申请',stay:'-',fee:'-',time:'-'};
+  
+  // 基础数据合并
+  const base = {
+    name: typeInfo.name,
+    stay: typeInfo.stay,
+    fee: typeInfo.fee,
+    time: typeInfo.time,
+    rate: 85,
+    rateLevel: 'high',
+    rateLabel: '高 (材料真实且完整)',
+    officialSource: '使馆/领馆官网',
+    submissionMethod: { type: 'mixed', description: '可个人递交或委托代办' },
+    docs: (c && c.docs) ? [...c.docs] : [],
+    tips: (c && c.tips) ? [...c.tips] : [],
+    pitfalls: (c && c.pitfalls) ? [...c.pitfalls] : []
+  };
+
+  // 严谨化数据修正
+  const countryConfig = {
+    'south-korea': {
+      officialSource: '大韩民国驻中国大使馆',
+      submissionMethod: { type: 'mixed', description: '可个人前往签证中心递交，或通过指定代办机构。' },
+      types: {
+        'single': { fee: '280元(领事费) + 签证中心费', stay: '90天' },
+        'multiple-5y': { fee: '580元(领事费) + 签证中心费', stay: '90天', extraDocs: [{name:'五年多次资格证明', desc:'如：月薪5k+、本科在读/毕业、特定职业等', required:true}] }
+      }
+    },
+    'japan': {
+      officialSource: '日本国驻华大使馆',
+      submissionMethod: { type: 'agent_only', description: '日本签证必须通过使馆指定的代办机构递交，不接受个人直接申请。' },
+      types: {
+        'single': { fee: '200元(领事费) + 代办服务费', stay: '15-30天' },
+        'multiple-3y': { fee: '400元(领事费) + 代办服务费', stay: '30天' }
+      }
+    },
+    'usa': {
+      officialSource: '美国驻华大使馆 (USTravelDocs)',
+      submissionMethod: { type: 'mixed', description: '需在线填写DS-160，缴纳规费后预约面签。' },
+      personalLink: 'https://www.ustraveldocs.com/cn/zh/step-1'
+    },
+    'united-kingdom': {
+      officialSource: '英国政府官网 (GOV.UK)',
+      submissionMethod: { type: 'mixed', description: '在线申请并缴费，预约至VFS Global中心采集指纹。' },
+      personalLink: 'https://www.gov.uk/standard-visitor-visa/apply',
+      types: {
+        'visitor-6m': { fee: '约1000元', stay: '180天' },
+        'visitor-2y': { fee: '约3800元', stay: '180天/次' }
+      }
+    },
+    'australia': {
+      officialSource: '澳大利亚内政事务部 (ImmiAccount)',
+      submissionMethod: { type: 'personal_only', description: '全面电子签，通过ImmiAccount在线上传材料，无需面签。' },
+      personalLink: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/visitor-600',
+      types: {
+        'tourist': { fee: '190澳币', stay: '3/6/12个月' }
+      }
+    },
+    'thailand': {
+      officialSource: '泰国驻华大使馆',
+      submissionMethod: { type: 'mixed', description: '可在线申请电子签(E-Visa)或办理落地签。' },
+      personalLink: 'https://www.thaievisa.go.th/',
+      types: {
+        'sticker': { fee: '240元', stay: '60天' },
+        'voa': { fee: '2000泰铢', stay: '15天' }
+      }
+    },
+    'singapore': {
+      officialSource: '新加坡驻华大使馆',
+      submissionMethod: { type: 'agent_only', description: '必须通过指定的授权单位/旅行社递交。' },
+      types: {
+        'entry': { fee: '300元(领事费)+代办费', stay: '30天' }
+      }
+    },
+    'spain': { officialSource: '西班牙驻华使馆 (BLS International)', submissionMethod: { type: 'mixed', description: '通过BLS中心递交。' }, personalLink: 'https://china.blsspainvisa.com/' },
+    'italy': { officialSource: '意大利驻华使馆 (VFS Global)', submissionMethod: { type: 'mixed', description: '通过VFS中心递交。' }, personalLink: 'https://visa.vfsglobal.com/chn/zh/ita/' },
+    'france': { officialSource: '法国驻华使馆 (TLScontact)', submissionMethod: { type: 'mixed', description: '通过中智签证中心递交。' }, personalLink: 'https://fr.tlscontact.com/cn/BJS/index.php' },
+    'germany': { officialSource: '德国驻华使馆 (VFS Global)', submissionMethod: { type: 'mixed', description: '通过VFS中心递交。' }, personalLink: 'https://visa.vfsglobal.com/chn/zh/deu/' }
+
+  };
+
+  const config = countryConfig[countryId];
+  if (config) {
+    if (config.officialSource) base.officialSource = config.officialSource;
+    if (config.submissionMethod) base.submissionMethod = config.submissionMethod;
+    if (config.personalLink) base.submissionMethod.personalLink = config.personalLink;
+    
+    if (config.types && config.types[typeId]) {
+      const t = config.types[typeId];
+      if (t.fee) base.fee = t.fee;
+      if (t.stay) base.stay = t.stay;
+      if (t.extraDocs) base.docs.push(...t.extraDocs);
+    }
+  }
+  
+  return base;
 }
 
 // ═══════════════════════════════════════════════
